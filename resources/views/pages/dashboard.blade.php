@@ -242,6 +242,9 @@
       } else {
         cart.push({ ...item, quantity: 1, totalPrice: item.price });
       }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+
       renderCart();
       updateSummary();
     }

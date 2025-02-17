@@ -17,16 +17,22 @@ namespace App\Models{
  *
  * @mixin IdeHelperDetailOrder
  * @property int $id_detail_order
+ * @property int $quantity
+ * @property string $harga_satuan
+ * @property string $total_harga
  * @property int $id_order
  * @property int $id_masakan
- * @property string $keterangan
+ * @property-read \App\Models\Masakan $masakan
+ * @property-read \App\Models\Order $order
  * @method static \Illuminate\Database\Eloquent\Builder|DetailOrder newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DetailOrder newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DetailOrder query()
+ * @method static \Illuminate\Database\Eloquent\Builder|DetailOrder whereHargaSatuan($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DetailOrder whereIdDetailOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DetailOrder whereIdMasakan($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DetailOrder whereIdOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|DetailOrder whereKeterangan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DetailOrder whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DetailOrder whereTotalHarga($value)
  */
 	class DetailOrder extends \Eloquent {}
 }
@@ -92,12 +98,17 @@ namespace App\Models{
  *
  * @mixin IdeHelperOrder
  * @property int $id_order
- * @property string $tanggal
+ * @property string $total_harga
+ * @property string|null $nama_pemesan
+ * @property string $status_pesanan
  * @property int $id_user
  * @property int|null $id_meja
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DetailOrder> $detailOrders
+ * @property-read int|null $detail_orders_count
  * @property-read \App\Models\Meja|null $meja
+ * @property-read \App\Models\Transaction|null $transaction
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
@@ -106,10 +117,38 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereIdMeja($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereIdOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereIdUser($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Order whereTanggal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereNamaPemesan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereStatusPesanan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereTotalHarga($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
  */
 	class Order extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $id_order
+ * @property string $metode_pembayaran
+ * @property string $status_pembayaran
+ * @property string $total_bayar
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Order $order
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereIdOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereMetodePembayaran($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereStatusPembayaran($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereTotalBayar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereUpdatedAt($value)
+ */
+	class Transaction extends \Eloquent {}
 }
 
 namespace App\Models{

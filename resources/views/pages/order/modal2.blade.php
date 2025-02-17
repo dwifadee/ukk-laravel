@@ -29,22 +29,23 @@
                     <hr class="horizontal dark my-3">
                     <h5>Pilih Metode Pembayaran</h5>
                     <div class="d-flex text-center gap-3 mb-4 mt-3">
-                        <div class="holdable-button bg-white shadow p-3 rounded w-auto flex-grow-1" data-method="TUNAI">
+                        <div class="holdable-button bg-white shadow p-3 rounded w-auto flex-grow-1" data-method="tunai">
                             <span class="fs-6 fw-bolder">TUNAI</span>
                         </div>
-                        <div class="holdable-button bg-white shadow p-3 rounded w-auto flex-grow-1" data-method="REKENING">
+                        <div class="holdable-button bg-white shadow p-3 rounded w-auto flex-grow-1" data-method="rekening">
                             <span class="fs-6 fw-bolder">REKENING</span>
                         </div>
-                        <div class="holdable-button bg-white shadow p-3 rounded w-auto flex-grow-1" data-method="E-WALLET">
+                        <div class="holdable-button bg-white shadow p-3 rounded w-auto flex-grow-1" data-method="ewallet">
                             <span class="fs-6 fw-bolder">E-WALLET</span>
                         </div>
                     </div>
 
                     <!-- Hidden Inputs -->
                     <input type="hidden" name="id_order" id="hidden_id_order">
-                    <input type="hidden" name="nama" id="hidden_nama">
+                    <input type="hidden" name="nama_pemesan" id="hidden_nama">
                     <input type="hidden" name="id_meja" id="hidden_meja">
                     <input type="hidden" name="metode_pembayaran" id="hidden_method">
+                    <input type="hidden" name="items" id="hidden_items">
                     <input type="hidden" name="id_user" value="{{ Auth::id() }}">
                 </div>
                 <div class="modal-footer">
@@ -89,6 +90,22 @@
             e.preventDefault();
             alert("Silakan pilih metode pembayaran!");
         }
+
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+        if (cartItems.length === 0) {
+            e.preventDefault();
+            alert("Keranjang kosong! Silakan tambahkan item sebelum melanjutkan.");
+            return;
+        }
+
+        const formattedItems = cartItems.map(item => ({
+        id_masakan: item.id,
+        quantity: item.quantity
+        }));
+
+        document.getElementById("hidden_items").value = JSON.stringify(formattedItems);
+
+        localStorage.removeItem('cart');
     });
 </script>
-
