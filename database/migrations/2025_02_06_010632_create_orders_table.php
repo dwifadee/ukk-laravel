@@ -13,10 +13,9 @@ return new class extends Migration {
         Schema::create('orders', function (Blueprint $table) {
             $table->id('id_order');
             $table->timestamp('tanggal')->useCurrent();
-            $table->unsignedBigInteger('id_user');
-
-            $table->foreign('id_user')->references('id_user')->on('user')->onDelete('cascade');
-            
+            $table->foreignId('id_user')->constrained('user', 'id_user')->onDelete('cascade'); 
+            $table->foreignId('id_meja')->nullable()->constrained('meja', 'id_meja')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

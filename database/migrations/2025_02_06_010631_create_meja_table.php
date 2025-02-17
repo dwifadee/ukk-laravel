@@ -14,12 +14,7 @@ return new class extends Migration
         Schema::create('meja', function (Blueprint $table) {
             $table->id('id_meja');
             $table->string('no_meja');
-            $table->boolean('is_active')->default(true);
-            
-        });
-
-        Schema::table('orders',function (Blueprint $table) {
-            $table->foreignId('id_meja')->nullable()->constrained('meja','id_meja');
+            $table->boolean('is_active')->default(true); 
         });
         
 

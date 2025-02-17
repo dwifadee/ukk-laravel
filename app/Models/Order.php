@@ -12,12 +12,14 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $table = 'orders';
+
+    protected $primaryKey = 'id_order';
+
     protected $fillable = [
         'id_order',
         'tanggal',
         'id_user',
-        'keterangan',
-        'status_order',
         'id_meja',
     ];
 

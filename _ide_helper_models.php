@@ -95,15 +95,19 @@ namespace App\Models{
  * @property string $tanggal
  * @property int $id_user
  * @property int|null $id_meja
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Meja|null $meja
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereIdMeja($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereIdOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereIdUser($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereTanggal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
  */
 	class Order extends \Eloquent {}
 }
@@ -120,6 +124,8 @@ namespace App\Models{
  * @property int $id_level
  * @property string $created_at
  * @property-read \App\Models\Level $level
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Order> $orders
  * @property-read int|null $orders_count
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])

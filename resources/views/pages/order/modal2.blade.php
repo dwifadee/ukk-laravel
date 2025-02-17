@@ -11,14 +11,13 @@
     }
 </style>
 
-<form action="{{ route('orders.store') }}" method="POST">
+<form action="{{ route('orders.store') }}" method="POST" id="orderFormSubmit">
     @csrf
-    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true"
-        data-bs-backdrop="true">
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel2">Modal 2</h5>
+                    <h5 class="modal-title" id="exampleModalLabel2">Konfirmasi Pesanan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -44,7 +43,8 @@
                     <!-- Hidden Inputs -->
                     <input type="hidden" name="id_order" id="hidden_id_order">
                     <input type="hidden" name="nama" id="hidden_nama">
-                    <input type="hidden" name="no_meja" id="hidden_meja">
+                    <input type="hidden" name="id_meja" id="hidden_meja">
+                    <input type="hidden" name="metode_pembayaran" id="hidden_method">
                     <input type="hidden" name="id_user" value="{{ Auth::id() }}">
                 </div>
                 <div class="modal-footer">
@@ -58,12 +58,12 @@
 
 <script>
     function generateOrderID() {
-        const randomNumber = Math.floor(10000 + Math.random() * 90000);
-        return `ORD${randomNumber}`;
+        return `${Math.floor(10000 + Math.random() * 90000)}`;
     }
 
     document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("id_order").textContent = generateOrderID();
+        document.getElementById("hidden_id_order").value = document.getElementById("id_order").textContent;
 
         const totalBayarSpan = document.querySelector("#total_bayar");
         const totalElement = document.querySelector('.d-flex.justify-content-between.mb-4 strong:last-child');
@@ -75,31 +75,20 @@
 
     document.querySelectorAll('.holdable-button').forEach(button => {
         button.addEventListener('click', () => {
-            if (button.classList.contains('active')) {
-                button.classList.remove('active');
-                return;
-            }
-
             document.querySelectorAll('.holdable-button').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
 
             const method = button.getAttribute('data-method');
-            document.getElementById("hidden_method").value = method;  // Set the selected method
+            document.getElementById("hidden_method").value = method;
         });
     });
 
-    function forceCloseModals() {
-        document.querySelectorAll('.modal').forEach(modal => {
-            let modalInstance = bootstrap.Modal.getInstance(modal);
-            if (modalInstance) {
-                modalInstance.hide();
-            }
-        });
-
-        setTimeout(() => {
-            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-            document.body.classList.remove('modal-open');
-            document.body.style = '';
-        }, 50);
-    }
+    document.getElementById('orderFormSubmit').addEventListener('submit', function (e) {
+        const metode = document.getElementById("hidden_method").value;
+        if (!metode) {
+            e.preventDefault();
+            alert("Silakan pilih metode pembayaran!");
+        }
+    });
 </script>
+

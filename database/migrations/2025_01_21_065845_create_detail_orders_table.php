@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_order');
             $table->unsignedBigInteger('id_masakan');
             $table->string('keterangan');
-
             $table->foreign('id_masakan')->references('id_masakan')->on('masakans')->onDelete('cascade');
         });
     }

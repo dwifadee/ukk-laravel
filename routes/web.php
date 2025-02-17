@@ -21,7 +21,9 @@ use App\Http\Controllers\OrderController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::resource('orders', OrderController::class);
+// Route::resource('orders', OrderController::class);
+Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 
 Route::get('/sign-in', function () {
     return view('pages.sign-in');
