@@ -19,9 +19,10 @@ use App\Http\Controllers\OrderController;
 |
 */
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/', [AuthController::class, 'showLoginForm'])->name('login.form');
 
-// Route::resource('orders', OrderController::class);
+Route::get('/order', [DashboardController::class, 'index'])->name('dashboard');
+
 Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/order/success', function () {
@@ -44,7 +45,7 @@ Route::delete('/permissions/{user}', [UserController::class, 'destroy'])->name('
 
 Route::get('/kasir', [KasirController::class, 'index'])->name('kasir');
 
-// Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/waiter', [KasirController::class, 'view'])->name('waiter');
 
 Route::resource( 'menu', MasakanController::class);
 

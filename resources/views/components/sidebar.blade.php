@@ -7,6 +7,11 @@
     <link href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,800" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('css/soft-ui-dashboard.css?v=1.1.0') }}" rel="stylesheet" />
+    <style>
+        .nav-link-text {
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 
@@ -14,7 +19,7 @@
     id="sidenav-main">
     <div class="sidenav-header d-flex justify-content-center">
 
-        <a class="navbar-brand" href="{{ url('/') }}">
+        <a class="navbar-brand" href="{{ url('/order') }}">
             <img src="{{ asset('img/logo-ct-dark.png') }}" class="navbar-brand-img h-100" alt="main_logo">
             <span class="ms-1 font-weight-bold">Kasir Pintar</span>
         </a>
@@ -27,9 +32,14 @@
                     href="{{ route('dashboard') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <svg class="w-60 h-60 order-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                            <path fill="currentColor"
-                                d="M0 80l0 48c0 17.7 14.3 32 32 32l16 0 48 0 0-80c0-26.5-21.5-48-48-48S0 53.5 0 80zM112 32c10 13.4 16 30 16 48l0 304c0 35.3 28.7 64 64 64s64-28.7 64-64l0-5.3c0-32.4 26.3-58.7 58.7-58.7L480 320l0-192c0-53-43-96-96-96L112 32zM464 480c61.9 0 112-50.1 112-112c0-8.8-7.2-16-16-16l-245.3 0c-14.7 0-26.7 11.9-26.7 26.7l0 5.3c0 53-43 96-96 96l176 0 96 0z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-scroll-text">
+                            <path d="M15 12h-5" />
+                            <path d="M15 8h-5" />
+                            <path d="M19 17V5a2 2 0 0 0-2-2H4" />
+                            <path
+                                d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3" />
                         </svg>
                     </div>
                     <span class="nav-link-text ms-1">Order</span>
@@ -49,6 +59,24 @@
                     <span class="nav-link-text ms-1">Kasir</span>
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('waiter') ? 'active' : '' }}" href="{{ route('waiter') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-utensils-crossed">
+                            <path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8" />
+                            <path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7" />
+                            <path d="m2.1 21.8 6.4-6.3" />
+                            <path d="m19 5-7 7" />
+                        </svg>
+                    </div>
+                    <span class="nav-link-text ms-1">Waiter</span>
+                </a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('menu.index') ? 'active' : '' }}"
                     href="{{ route('menu.index') }}">
@@ -62,6 +90,7 @@
                     <span class="nav-link-text ms-1">Menu</span>
                 </a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('permissions.index') ? 'active' : '' }}"
                     href="{{ route('permissions.index') }}">
@@ -76,11 +105,12 @@
                     <span class="nav-link-text ms-1">Permissions</span>
                 </a>
             </li>
+
         </ul>
     </div>
     <div class="sidenav-footer mx-3 ">
 
-        <a class="btn btn-primary mt-9 w-100" href="">Account</a>
+        <a class="btn btn-primary mt-9 w-100" href="{{ route('sign-in') }}">Log out</a>
     </div>
 </aside>
 

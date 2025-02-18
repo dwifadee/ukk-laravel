@@ -1,16 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Order;
 
 use Illuminate\Http\Request;
-use App\Models\Masakan;
 
 class KasirController extends Controller
 {
     public function index()
     {
-        $masakans = Masakan::all();
-        return view('pages.kasir', ['masakans' => $masakans]);
+        $orders = Order::with('meja')->get();
+        return view('pages.kasir.index', compact('orders'));
+    }
+
+    public function view()
+    {
+        return view('pages.waiter.index');
     }
 
 }
