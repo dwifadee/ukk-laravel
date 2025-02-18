@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -45,11 +46,12 @@ class OrderController extends Controller
         $items = json_decode($request->items, true);
         $request->merge(['items' => $items]);
 
-        // Debugging: cek apakah `items` sudah berubah jadi array
         if (!is_array($items)) {
             return back()->withErrors(['items' => 'Format data tidak valid.']);
         }
-        $request->validate([
+
+        $validator =  Validator::make($request->all() , [
+            'id_order' => 'nullable',
             'nama_pemesan' => 'nullable|string',
             'id_user' => 'nullable|exists:user,id_user',
             'id_meja' => 'nullable|exists:meja,id_meja',
@@ -57,7 +59,7 @@ class OrderController extends Controller
             'items.*.id_masakan' => 'required|exists:masakans,id_masakan',
             'items.*.quantity' => 'required|integer|min:1',
         ]);
-        
+
         $totalHarga = 0;
         foreach ($request->items as $item) {
             $masakan = Masakan::find($item['id_masakan']);
@@ -66,36 +68,32 @@ class OrderController extends Controller
             }
             $totalHarga += $masakan->harga * $item['quantity'];
         }
-        $orderData = [
-            'nama_pemesan' => $request->nama_pemesan,
-            'id_user' => $request->id_user,
-            'id_meja' => $request->id_meja,
-            'total_harga' => $totalHarga,
-            'status_pesanan' => 'pending',
-        ];
+
+        try {
         DB::transaction(function () use ($request, $totalHarga) {
             $order = Order::create([
+                'id_order' => $request->id_order,
                 'nama_pemesan' => $request->nama_pemesan,
                 'id_user' => $request->id_user,
                 'id_meja' => $request->id_meja,
                 'total_harga' => $totalHarga,
-                'status_pesanan' => 'pending',
+                'status_pesanan' => 'tertunda',
             ]);
 
             Transaction::create([
-                'id_order' => $order->id_order,
+                'id_order' => $request->id_order,
                 'metode_pembayaran' => $request->metode_pembayaran,
-                'status_pembayaran' => 'pending',
+                'status_pembayaran' => 'tertunda',
                 'total_bayar' => $totalHarga,
             ]);
-        
+
             foreach ($request->items as $item) {
                 $masakan = Masakan::find($item['id_masakan']);
                 if (!$masakan) {
                     throw new \Exception("Masakan ID {$item['id_masakan']} tidak ditemukan");
                 }
                 DetailOrder::create([
-                    'id_order' => $order->id_order,
+                    'id_order' => $request->id_order,
                     'id_masakan' => $masakan->id_masakan,
                     'quantity' => $item['quantity'],
                     'harga_satuan' => $masakan->harga,
@@ -105,6 +103,32 @@ class OrderController extends Controller
         });
 
         return redirect()->route('order.success')->with('success', 'Pesanan berhasil dibuat!');
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+    }
+
+    public function confirmOrder($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->status_pesanan = 'proses';
+        $order->save();
+
+        $transaction = $order->transaction;
+        if ($transaction) {
+            $transaction->status_pembayaran = 'selesai';
+            $transaction->save();
+        }
+
+        return redirect()->route('waiter')->with('success', 'Order has been confirmed.');
+    }
+
+    public function cancelOrder($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->delete();
+
+        return redirect()->route('kasir')->with('success', 'Order has been cancelled.');
     }
 
     /**

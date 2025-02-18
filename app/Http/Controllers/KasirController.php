@@ -13,9 +13,4 @@ class KasirController extends Controller
         return view('pages.kasir.index', compact('orders'));
     }
 
-    public function view()
-    {
-        return view('pages.waiter.index');
-    }
-
 }

@@ -28,7 +28,7 @@ class AuthController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Simpan user baru dengan default role sebagai pelanggan (id_level = 4)
+        // Simpan user baru dengan default role sebagai pelanggan (id_level = 5)
         User::create([
             'nama_user' => $request->nama_user,
             'username' => $request->username,

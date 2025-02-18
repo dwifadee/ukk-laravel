@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_order')->constrained('orders', 'id_order')->onDelete('cascade');
             $table->enum('metode_pembayaran', ['tunai', 'rekening', 'ewallet']);
-            $table->enum('status_pembayaran', ['pending', 'paid', 'failed'])->default('pending');
+            $table->enum('status_pembayaran', ['tertunda', 'selesai', 'batal'])->default('tertunda');
             $table->decimal('total_bayar', 10, 2);
             $table->timestamps();
         });

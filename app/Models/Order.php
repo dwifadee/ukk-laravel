@@ -14,8 +14,11 @@ class Order extends Model
 
     protected $table = 'orders';
     protected $primaryKey = 'id_order';
+    public $incrementing = false;
+    protected $keyType = 'integer';
 
     protected $fillable = [
+        'id_order',
         'total_harga',
         'nama_pemesan',
         'status_pesanan',
